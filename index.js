@@ -46,7 +46,7 @@ app.use(flash());
 
 const pool = new Pool({
     connectionString,
-  //  ssl: useSSL
+    // ssl: useSSL
 });
 
 const regnumbers = reg_numbers(pool);
@@ -54,22 +54,25 @@ const regnumbers = reg_numbers(pool);
 
 app.get('/', async function (req, res) {
 
- //   const entered = await regnumbers.enteringRegNumbers()
+    const getReg = await regnumbers.getRegNumber();
+
+
 
     res.render('index', {
-        // entered,
+        getReg
 
     });
 
 
 });
 
-app.post('/', async function(req, res){
+app.post('/', async function (req, res) {
 
 
     const reg = _.upperCase(req.body.reg);
-    const town = req.body.town;
-    console.log(reg);
+    await regnumbers.regNumbersAdded(reg);
+    const getReg = await regnumbers.getRegNumber();
+    console.log(getReg);
 
     // if (!reg) {
     //     req.flash('error', 'Please enter a registration number')
@@ -80,11 +83,11 @@ app.post('/', async function(req, res){
     // }
     // else {
     //     await regnumbers.registrationWork(reg);
-        
-        res.render('index', {
-            // numberPlates: await regnumbers.registrationWork(reg, town),
-            reg
-        });
+
+    res.render('index', {
+        // numberPlates: await regnumbers.registrationWork(reg, town),
+        reg: getReg
+    });
     //     return;
     // }
 
@@ -119,16 +122,16 @@ app.post('/', async function(req, res){
 //  });
 
 
-app.get('/reset', async function (){
+app.get('/reset', async function () {
 
     await regnumbers.reset()
 
-res.render('index', {
+    res.render('index', {
 
-    reg: await regnumbers.getRegNumber()
+        reg: await regnumbers.getRegNumber()
 
 
-});
+    });
 
 
 });

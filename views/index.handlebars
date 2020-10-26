@@ -2,7 +2,7 @@
     <div>
         <h1>Registration numbers</h1>
 
-         {{#if messages}}
+        {{#if messages}}
         <div class="messages">
             <h6>{{messages.error}}</h6>
             {{/if}}
@@ -12,18 +12,19 @@
         <div>
             <form action="/" method="POST">
                 <input type="text" name="reg" class="" placeholder="enter a registration number">
-                <button class="button-primary" type="submit">Add reg number</button> <a href="/reset"><button class="button primary" type="submit">Reset</button></a>
-<br>
+                <button class="button-primary" type="submit">Add reg number</button> <a href="/reset"><button
+                        class="button primary" type="submit">Reset</button></a>
+                <br>
                 <div class="dropdown">
                     <input type="search" placeholder="Select a town">
-                {{!-- <button class="button primary"><strong>Filter by town</strong></button> --}}
-                <div class="dropdown-content">
-                    <a href="#" name="town" class="town" value="">Show all</a>
-                    <a href="#" name="town" class="town" value="CY">Bellville</a>
-                    <a href="#" name="town" class="town" value="CJ">Paarl</a>
-                    <a href="#" name="town" class="town" value="CA">Cape Town</a>
+                    {{!-- <button class="button primary"><strong>Filter by town</strong></button> --}}
+                    <div class="dropdown-content">
+                        <a href="#" name="town" class="town" value="">Show all</a>
+                        <a href="#" name="town" class="town" value="CY">Bellville</a>
+                        <a href="#" name="town" class="town" value="CJ">Paarl</a>
+                        <a href="#" name="town" class="town" value="CA">Cape Town</a>
+                    </div>
                 </div>
-            </div>
 
 
 
@@ -45,10 +46,14 @@
 
             <hr>
 
-            <div class="regNu">
+            <div>
+                <ul>
+                    {{#each reg}}
+                    <li class="regNumber">{{this.reg}}</li>
+                    {{/each}}
+
+                </ul>
                 <!-- <i>Reg numbers to be added here...</i> -->
-                {{#each reg}}
-                {{/each}}
 
             </div>
         </div>
