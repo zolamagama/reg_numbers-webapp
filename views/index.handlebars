@@ -19,10 +19,10 @@
                     <input type="search" placeholder="Select a town">
                     {{!-- <button class="button primary"><strong>Filter by town</strong></button> --}}
                     <div class="dropdown-content">
-                        <a href="#" name="town" class="town" value="">Show all</a>
-                        <a href="#" name="town" class="town" value="CY">Bellville</a>
-                        <a href="#" name="town" class="town" value="CJ">Paarl</a>
-                        <a href="#" name="town" class="town" value="CA">Cape Town</a>
+                        <a href="/index" name="town" class="town" value="">Show all</a>
+                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CY">Bellville</a>
+                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CJ">Paarl</a>
+                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CA">Cape Town</a>
                     </div>
                 </div>
 
@@ -47,12 +47,13 @@
             <hr>
 
             <div>
-                <ul>
-                    {{#each reg}}
-                    <li class="regNumber">{{this.reg}}</li>
+                    {{#each getReg}}
+                    <li class="regNumber">
+                        {{this.registration}}
+                        </li>
                     {{/each}}
 
-                </ul>
+                
                 <!-- <i>Reg numbers to be added here...</i> -->
 
             </div>

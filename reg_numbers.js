@@ -2,20 +2,37 @@ module.exports = function regNumbers(pool) {
 
 
 
-    async function enteringRegNumbers(reg) {
-        // const capitalize = reg.charAt(0).toUpperCase() + reg.slice(1).toLowerCase()
+    // async function enteringRegNumbers(reg) {
+    //     // const capitalize = reg.charAt(0).toUpperCase() + reg.slice(1).toLowerCase()
 
-        let inspect = await pool.query('select registration from reg_numbers where registration = $1;', [reg]);
-        return inspect.rows;
+    //     let inspect = await pool.query('select registration from reg_numbers where registration = $1;', [reg]);
+    //     return await inspect;
 
 
-    }
+    // }
 
     async function getRegNumber() {
-        const town = await pool.query('select registration from reg_numbers');
+        const town = await pool.query('select * from reg_numbers');
         return town.rows;
     }
 
+    async function townReg() {
+        const fromWhichTown = await pool.query('select town_id from reg_numbers where town_id=$1')
+        return fromWhichTown.rows
+    }
+
+    // async function showNumbers() {
+    //     const regNumbers = await pool.query('select registration from reg_numbers');
+    //     return await regNumbers
+
+    // }
+
+    // async function insertReg(reg) {
+
+    //     var results = await pool.query('insert into reg_numbers (registration, town_id) values ($1,$2);', [reg, id])
+
+    //     return await results
+    // }
     // async function registrationWork(reg, town) {
     //     let dataReg = await enteringRegNumbers(reg)
     //     if (dataReg.length === 0) {
@@ -34,25 +51,19 @@ module.exports = function regNumbers(pool) {
         const plate = reg.substring(0, 2).trim();
         const towns = await pool.query('select id from town where starts_with = $1', [plate]);
         const id = towns.rows[0].id;
-        console.log(id);
         let regValid;
         if (id > 0) {
-            regValid = await pool.query('select * from reg_numbers where registration = $1', [reg]);
+            regValid = await pool.query('select registration from reg_numbers where registration = $1', [reg]);
         }
         if (regValid.rowCount < 1) {
             await pool.query('insert into reg_numbers (registration, town_id) values ($1,$2);', [reg, id])
         }
-    
- 
+
+
     }
     }
 
-    // async function insertReg(reg) {
 
-    //     var results = await pool.query('insert into reg_numbers (registration, town_id) values ($1,$2);', [reg, 1])
-
-    //     return results
-    // }
 
     //  async function updateReg(reg) {
 
@@ -75,11 +86,13 @@ module.exports = function regNumbers(pool) {
 
 
     return {
-        enteringRegNumbers,
+    //    enteringRegNumbers,
         regNumbersAdded,
         getRegNumber,
+        townReg,
+     //   showNumbers,
         // registrationWork,
-        // insertReg,
+    //    insertReg,
         // updateReg,
         reset
     }

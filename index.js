@@ -70,44 +70,27 @@ app.post('/', async function (req, res) {
 
 
     const reg = _.upperCase(req.body.reg);
-    await regnumbers.regNumbersAdded(reg);
-    const getReg = await regnumbers.getRegNumber();
-    console.log(getReg);
 
-    // if (!reg) {
-    //     req.flash('error', 'Please enter a registration number')
-    //     res.render('index', {
-    //         reg,
-    //     });
-    //     return;
-    // }
-    // else {
-    //     await regnumbers.registrationWork(reg);
+    var insertReg = await regnumbers.regNumbersAdded(reg);
+
+    const getReg = await regnumbers.getRegNumber();
 
     res.render('index', {
-        // numberPlates: await regnumbers.registrationWork(reg, town),
-        reg: getReg
+        reg: insertReg,
+        getReg
     });
-    //     return;
-    // }
 
 });
 
-// app.get('/reg_numbers', async function (req, res)  {
+app.get('/reg_numbers/:town_name', async function (req, res) {
+    
+    const whichTown = req.body.town_name
+    const townName = await regnumbers.townReg()
+    res.render('reg_numbers', {
+        whichTown, townName
+    });
 
-// const reg = _.capitalize(req.body.reg);
-
-
-// if (!reg) {
-//     req.flash('error', 'Please enter a registration number')
-//     res.render('reg_numbers', {
-//         entered: await regnumbers.getRegNumber()
-
-
-//     });
-// };
-
-// });
+});
 
 // app.post('/reg_numbers', function (req, res) {
 
@@ -127,10 +110,7 @@ app.get('/reset', async function () {
     await regnumbers.reset()
 
     res.render('index', {
-
-        reg: await regnumbers.getRegNumber()
-
-
+        registration: await regnumbers.getRegNumber()
     });
 
 
@@ -148,7 +128,7 @@ app.get('/reset', async function () {
 
 
 
-const PORT = process.env.PORT || 3197;
+const PORT = process.env.PORT || 4001;
 
 app.listen(PORT, function () {
 
