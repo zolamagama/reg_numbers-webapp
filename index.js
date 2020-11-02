@@ -54,12 +54,14 @@ const regnumbers = reg_numbers(pool);
 
 app.get('/', async function (req, res) {
 
-    const getReg = await regnumbers.getRegNumber();
+    var getReg = await regnumbers.getRegNumber();
+
 
 
 
     res.render('index', {
-        getReg
+        plates: getReg
+
 
     });
 
@@ -68,49 +70,43 @@ app.get('/', async function (req, res) {
 
 app.post('/', async function (req, res) {
 
-
+    // const whichTown = req.body.town_name
     const reg = _.upperCase(req.body.reg);
+
+
 
     var insertReg = await regnumbers.regNumbersAdded(reg);
 
-    const getReg = await regnumbers.getRegNumber();
+    var getReg = await regnumbers.getRegNumber();
 
     res.render('index', {
         reg: insertReg,
-        getReg
+        plates: getReg
     });
 
 });
 
-app.get('/reg_numbers/:town_name', async function (req, res) {
-    
-    const whichTown = req.body.town_name
-    const townName = await regnumbers.townReg()
-    res.render('reg_numbers', {
-        whichTown, townName
+app.post('/reg_numbers', async function (req, res) {
+    const drop = req.body.town
+   // console.log(drop);
+    var displayFilter = await regnumbers.filterRegNumbers(drop);
+
+
+
+    res.render('index', {
+        plates: displayFilter
+        
+
     });
 
 });
 
-// app.post('/reg_numbers', function (req, res) {
-
-
-//     res.redirect('/', {
-
-
-//     });
-
-
-
-//  });
-
-
-app.get('/reset', async function () {
+app.get('/reset', async function (req, res) {
 
     await regnumbers.reset()
 
     res.render('index', {
-        registration: await regnumbers.getRegNumber()
+
     });
 
 

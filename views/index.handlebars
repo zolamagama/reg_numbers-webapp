@@ -12,48 +12,46 @@
         <div>
             <form action="/" method="POST">
                 <input type="text" name="reg" class="" placeholder="enter a registration number">
-                <button class="button-primary" type="submit">Add reg number</button> <a href="/reset"><button
-                        class="button primary" type="submit">Reset</button></a>
+                <button class="button-primary" type="submit">Add reg number</button>
                 <br>
-                <div class="dropdown">
-                    <input type="search" placeholder="Select a town">
-                    {{!-- <button class="button primary"><strong>Filter by town</strong></button> --}}
-                    <div class="dropdown-content">
-                        <a href="/index" name="town" class="town" value="">Show all</a>
-                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CY">Bellville</a>
-                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CJ">Paarl</a>
-                        <a href="/reg_numbers/{{this.town_name}}" name="town" class="town" value="CA">Cape Town</a>
-                    </div>
-                </div>
+            </form>
 
+            <div>
+                <form action="/reset" method="GET">
+                    <a href="/reset"><button class="button primary" type="submit">Reset</button></a>
 
+                </form>
+            </div>
 
-                {{!-- <div class="radio">
+            <form action="/reg_numbers" method="POST">
+
+                <div class="radio">
+
                     <strong>Filter by town</strong>
-                    <div class="radioBbutton">
-                        <input type="radio" name="town" class="town" value="">Show all
+                    <div class="radioBbutton" name="radioButton">
+                        <input type="radio" name="town" class="town" value="all">Show all
                         <input type="radio" name="town" class="town" value="CY">Bellville
                         <input type="radio" name="town" class="town" value="CJ">Paarl
                         <input type="radio" name="town" class="town" value="CA">Cape Town
-
+                        <br>
+                        <button class="button-primary" type="submit">Show</button>
                     </div>
 
 
-                </div> --}}
-
+                </div>
 
             </form>
 
             <hr>
 
             <div>
-                    {{#each getReg}}
-                    <li class="regNumber">
-                        {{this.registration}}
-                        </li>
-                    {{/each}}
+                {{#each plates}}
+                <li class="regNumber">
+                    {{this.registration}}
+                </li>
+                {{/each}}
 
-                
+
                 <!-- <i>Reg numbers to be added here...</i> -->
 
             </div>
