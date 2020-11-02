@@ -62,21 +62,21 @@ describe('The registration numbers web app', function () {
         let plates = registration(pool)
 
         await plates.regNumbersAdded('CA 123-321'),
-        await plates.regNumbersAdded('CY 123-321'),
-        await plates.regNumbersAdded('CJ 123-321'),
-        await plates.regNumbersAdded('CJ 123-321'),
-        await plates.regNumbersAdded('CA 3456780')
+            await plates.regNumbersAdded('CY 123-321'),
+            await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CA 3456780')
 
 
 
-        assert.deepEqual( [{
+        assert.deepEqual([{
             registration: 'CA 123-321'
-          },
-          {
+        },
+        {
             registration: 'CA 3456780'
-          }
+        }
         ]
-        , await plates.filterRegNumbers('CA'))
+            , await plates.filterRegNumbers('CA'))
     });
 
 
@@ -86,26 +86,26 @@ describe('The registration numbers web app', function () {
         let plates = registration(pool)
 
         await plates.regNumbersAdded('CA 123-321'),
-        await plates.regNumbersAdded('CY 123-321'),
-        await plates.regNumbersAdded('CJ 123-321'),
-        await plates.regNumbersAdded('CJ 9876548'),
-        await plates.regNumbersAdded('CA 3456780'),
-        await plates.regNumbersAdded('CJ 1298606'),
+            await plates.regNumbersAdded('CY 123-321'),
+            await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CJ 9876548'),
+            await plates.regNumbersAdded('CA 3456780'),
+            await plates.regNumbersAdded('CJ 1298606'),
 
 
 
 
-        assert.deepEqual( [{
-            registration: 'CJ 123-321'
-          },
-          {
-            registration: 'CJ 9876548'
-          },
-          {
-            registration: 'CJ 1298606'
-          }
-        ]
-        , await plates.filterRegNumbers('CJ'))
+            assert.deepEqual([{
+                registration: 'CJ 123-321'
+            },
+            {
+                registration: 'CJ 9876548'
+            },
+            {
+                registration: 'CJ 1298606'
+            }
+            ]
+                , await plates.filterRegNumbers('CJ'))
     });
 
     it('should be able to show registration numbers for Bellville', async function () {
@@ -113,21 +113,33 @@ describe('The registration numbers web app', function () {
         let plates = registration(pool)
 
         await plates.regNumbersAdded('CA 123-321'),
-        await plates.regNumbersAdded('CY 123-321'),
-        await plates.regNumbersAdded('CJ 123-321'),
-        await plates.regNumbersAdded('CJ 9876548'),
-        await plates.regNumbersAdded('CA 3456780'),
-        await plates.regNumbersAdded('CJ 1298606'),
+            await plates.regNumbersAdded('CY 123-321'),
+            await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CJ 9876548'),
+            await plates.regNumbersAdded('CA 3456780'),
+            await plates.regNumbersAdded('CJ 1298606'),
 
 
 
 
-        assert.deepEqual([{
-            registration: 'CY 123-321'
-          }
-        ]
-        , await plates.filterRegNumbers('CY'))
+            assert.deepEqual([{
+                registration: 'CY 123-321'
+            }
+            ]
+                , await plates.filterRegNumbers('CY'))
     });
+
+    // it('should not insert registration numbers for other towns', async function () {
+
+    //     let plates = registration(pool)
+
+    //     await plates.regNumbersAdded('GP 123-321'),
+    //     await plates.regNumbersAdded('MP 123-321'),
+    //     await plates.regNumbersAdded('CAA 123-321')
+
+    //     assert.equal(, await plates.getRegistration())
+
+    // });
 
     after(function () {
         pool.end();
