@@ -23,6 +23,11 @@ module.exports = function regNumbers(pool) {
         return town.rows;
     }
 
+    async function getRegistration() {
+        const individualTown = await pool.query('select registration from reg_numbers');
+        return individualTown.rows;
+    }
+
 
     async function filterRegNumbers(filterTown) {
 
@@ -53,7 +58,8 @@ module.exports = function regNumbers(pool) {
         regNumbersAdded,
         getRegNumber,
         filterRegNumbers,
-        reset
+        reset,
+        getRegistration
     }
 
 }   
