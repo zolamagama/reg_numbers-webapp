@@ -18,6 +18,8 @@ const Pool = pg.Pool;
 
 const _ = require('lodash');
 
+const routeFunction = require('./reg_routes')
+
 
 app.engine('handlebars', exphbs({
     layoutsDir: './views/layouts'
@@ -50,79 +52,16 @@ const pool = new Pool({
 });
 
 const regnumbers = reg_numbers(pool);
+const reg_routes = routeFunction(regnumbers)
 
 
-app.get('/', async function (req, res) {
+app.get('/', reg_routes.getReg);
 
-    var getReg = await regnumbers.getRegNumber();
+app.post('/', reg_routes.addReg);
 
+app.post('/reg_numbers', reg_routes.filterReg);
 
-
-
-    res.render('index', {
-        plates: getReg
-
-
-    });
-
-
-});
-
-app.post('/', async function (req, res) {
-
-    // const whichTown = req.body.town_name
-    const reg = _.upperCase(req.body.reg);
-
-
-
-    var insertReg = await regnumbers.regNumbersAdded(reg);
-
-    var getReg = await regnumbers.getRegNumber();
-
-    res.render('index', {
-        reg: insertReg,
-        plates: getReg
-    });
-
-});
-
-app.post('/reg_numbers', async function (req, res) {
-    const drop = req.body.town
-   // console.log(drop);
-    var displayFilter = await regnumbers.filterRegNumbers(drop);
-
-
-
-    res.render('index', {
-        plates: displayFilter
-        
-
-    });
-
-});
-
-app.get('/reset', async function (req, res) {
-
-    await regnumbers.reset()
-
-    res.render('index', {
-
-    });
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-
+app.get('/reset', reg_routes.resetReg);
 
 const PORT = process.env.PORT || 4001;
 

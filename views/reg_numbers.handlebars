@@ -7,12 +7,11 @@
             <h6>{{messages.error}}</h6>
             {{/if}}
         </div>
-        {{#if confirm}}
+        {{#if messages}}
         <div class="confirm">
-            <h6>{{confirm.success}}</h6>
+            <h6>{{messages.success}}</h6>
         </div>
         {{/if}}
-
         <div>
             <form action="/" method="POST">
                 <input type="text" name="reg" class="" placeholder="enter a registration number">
@@ -49,7 +48,7 @@
             <hr>
 
             <div>
-                {{#each plates}}
+                {{#each reg}}
                 <li class="regNumber">
                     {{this.registration}}
                 </li>

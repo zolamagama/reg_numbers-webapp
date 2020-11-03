@@ -14,14 +14,11 @@ const pool = new Pool({
 describe('The registration numbers web app', function () {
 
     beforeEach(async function () {
-        // clean the tables before each test run
         await pool.query("delete from reg_numbers;");
-        //      await pool.query("delete from categories;");
     });
 
     it('should be able to insert a registation number in the db', async function () {
 
-        // the Factory Function is called CategoryService
         let plates = registration(pool);
 
 
@@ -129,17 +126,7 @@ describe('The registration numbers web app', function () {
                 , await plates.filterRegNumbers('CY'))
     });
 
-    // it('should not insert registration numbers for other towns', async function () {
-
-    //     let plates = registration(pool)
-
-    //     await plates.regNumbersAdded('GP 123-321'),
-    //     await plates.regNumbersAdded('MP 123-321'),
-    //     await plates.regNumbersAdded('CAA 123-321')
-
-    //     assert.equal(, await plates.getRegistration())
-
-    // });
+    
 
     after(function () {
         pool.end();
