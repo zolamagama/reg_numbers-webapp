@@ -68,7 +68,7 @@ module.exports = function (pool) {
     async function reset() {
 
         var deleted = await pool.query('delete from reg_numbers');
-        return deleted;
+        return deleted.rows;
 
     }
 

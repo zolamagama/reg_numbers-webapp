@@ -69,14 +69,11 @@ describe('The registration numbers web app', function () {
 
         let plates = registration(pool);
 
-        await plates.reset('CA 123-321'),
-            await plates.reset('CJ 123-321'),
-            await plates.reset('CY 123-321')
+        await plates.regNumbersAdded('CA 123-321'),
+            await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CY 123-321')
 
-
-        var reg = await plates.getRegNumber()
-
-        assert.equal(0, reg)
+        assert.deepEqual([], await plates.reset())
 
     });
 

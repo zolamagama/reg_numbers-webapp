@@ -18,7 +18,7 @@ module.exports = function regNumbersRoutes(regnumbers) {
                     }
                 }
                 else {
-                    req.flash('error', 'Invalid registration number')
+                    req.flash('error', 'Invalid registration number, must start with CA, CJ or CY and have 4-6 numbers')
                 }
             } else {
                 req.flash('error', 'Please enter a registration number')
@@ -66,6 +66,7 @@ module.exports = function regNumbersRoutes(regnumbers) {
 
     async function resetReg(req, res, next) {
         try {
+            req.flash('success', 'Registration numbers successfully cleared')
             await regnumbers.reset()
 
             res.render('index', {

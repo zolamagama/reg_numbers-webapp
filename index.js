@@ -63,7 +63,7 @@ app.get('/reg_numbers', reg_routes.filterReg);
 
 app.get('/reset', reg_routes.resetReg);
 
-const PORT = process.env.PORT || 4001;
+const PORT = process.env.PORT || 5456;
 
 app.listen(PORT, function () {
 
