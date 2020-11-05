@@ -2,7 +2,6 @@ const express = require('express');
 
 const exphbs = require('express-handlebars');
 
-const app = express();
 
 const bodyParser = require('body-parser');
 
@@ -20,6 +19,7 @@ const _ = require('lodash');
 
 const routeFunction = require('./reg_routes')
 
+const app = express();
 
 app.engine('handlebars', exphbs({
     layoutsDir: './views/layouts'
@@ -50,16 +50,16 @@ const pool = new Pool({
     connectionString,
     // ssl: useSSL
 });
-
+//const already = regnumbers.duplicateReg()
 const regnumbers = reg_numbers(pool);
 const reg_routes = routeFunction(regnumbers)
 
 
 app.get('/', reg_routes.getReg);
 
-app.post('/', reg_routes.addReg);
+app.post('/reg_numbers', reg_routes.add);
 
-app.post('/reg_numbers', reg_routes.filterReg);
+app.get('/reg_numbers', reg_routes.filterReg);
 
 app.get('/reset', reg_routes.resetReg);
 

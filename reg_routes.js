@@ -2,87 +2,78 @@ module.exports = function regNumbersRoutes(regnumbers) {
     const _ = require('lodash');
 
 
-    async function addReg(req, res) {
+    async function add(req, res, next) {
+        try {
+            const reg = _.upperCase(req.body.reg);
+            var alreadyExists = await regnumbers.duplicateReg(reg);
 
-        const reg = _.upperCase(req.body.reg);
+            if (reg !== "") {
+                if (/C[AYJ] \d{4,6}$/.test(reg) || /C[AYJ] \d+\s|-\d+$/.test(reg)) {
+                    if (alreadyExists === 0) {
+                        await regnumbers.regNumbersAdded(reg)
+                        req.flash('success', 'You have successfully added a registration number')
+                    }
+                    else {
+                        req.flash('error', 'Registration number already exists')
+                    }
+                }
+                else {
+                    req.flash('error', 'Invalid registration number')
+                }
+            } else {
+                req.flash('error', 'Please enter a registration number')
 
-        if (!reg) {
-            req.flash('error', 'Please enter a registraion number')
+            }
             var getReg = await regnumbers.getRegNumber();
+
+            res.render('index', {
+                plates: getReg
+            });
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    async function getReg(req, res, next) {
+        try {
+            var getReg = await regnumbers.getRegNumber();
+
             res.render('index', {
                 plates: getReg
 
             });
-            return;
+        } catch (err) {
+            next(err)
         }
-        // if () {
-        //     req.flash('error', 'Reg number already exists')
-        //     var getReg = await regnumbers.getRegNumber();
-        //     res.render('index', {
-        //         plates: getReg
+    }
 
-        //     });
-        // }
+    async function filterReg(req, res, next) {
+        try {
+            const drop = req.query.town;
 
-        else {
-            var insertReg = await regnumbers.regNumbersAdded(reg);
-
-            var getReg = await regnumbers.getRegNumber();
-
+            const displayFilter = await regnumbers.filterRegNumbers(drop);
+            req.flash('success', 'You have filtered registration numbers');
 
             res.render('index', {
-                reg: insertReg,
-                plates: getReg
+                plates: displayFilter
             });
-            return;
-        }
-
-
-    }
-
-    async function getReg(req, res) {
-
-        var getReg = await regnumbers.getRegNumber();
-
-        res.render('index', {
-            plates: getReg
-
-        });
-
-    }
-
-    async function filterReg(req, res) {
-        const drop = req.body.town;
-
-        if (!drop) {
-            req.flash('error', 'First select a town')
-            var displayFilter = await regnumbers.filterRegNumbers(drop);
-            res.render('reg_numbers', {
-                reg: displayFilter
-            });
-            return;
-        }
-
-        else {
-            req.flash('success', 'You have filtered registration numbers')
-            var displayFilter = await regnumbers.filterRegNumbers(drop);
-            res.render('reg_numbers', {
-                reg: displayFilter
-            });
-            return;
+        } catch (err) {
+            next(err)
         }
     }
 
 
 
-    async function resetReg(req, res) {
+    async function resetReg(req, res, next) {
+        try {
+            await regnumbers.reset()
 
-        await regnumbers.reset()
+            res.render('index', {
 
-        res.render('index', {
-
-        });
-
+            });
+        } catch (err) {
+            next(err)
+        }
 
     };
 
@@ -94,7 +85,7 @@ module.exports = function regNumbersRoutes(regnumbers) {
 
 
     return {
-        addReg,
+        add,
         getReg,
         filterReg,
         resetReg
@@ -104,3 +95,4 @@ module.exports = function regNumbersRoutes(regnumbers) {
 
 
 }
+// || /C[AYJ] \d+\s|-\d+$.test(reg)

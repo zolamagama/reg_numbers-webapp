@@ -1,8 +1,8 @@
-module.exports = function regNumbers(pool) {
+module.exports = function (pool) {
 
 
     async function regNumbersAdded(reg) {
-        if (!reg == '') {
+        if (reg !== '') {
 
             const plate = reg.substring(0, 2).trim();
             const towns = await pool.query('select id from town where starts_with = $1', [plate]);
@@ -11,17 +11,29 @@ module.exports = function regNumbers(pool) {
             if (id > 0) {
                 regValid = await pool.query('select registration from reg_numbers where registration = $1', [reg]);
             }
+            else{
+                return false
+            }        
             if (regValid.rowCount < 1) {
                 await pool.query('insert into reg_numbers (registration, town_id) values ($1,$2);', [reg, id])
             }
+            else{
+                return false 
+            }
+        }
+        else{
+            return false 
         }
     }
 
+  
 
     async function getRegNumber() {
         const town = await pool.query('select * from reg_numbers');
         return town.rows;
     }
+
+   
 
     async function getRegistration() {
         const individualTown = await pool.query('select registration from reg_numbers');
@@ -47,6 +59,12 @@ module.exports = function regNumbers(pool) {
         }
     }
 
+    async function duplicateReg(exists) {
+        const alreadyEntered = await pool.query('select registration from reg_numbers where registration = $1', [exists]);
+        return alreadyEntered.rowCount
+
+    }
+
     async function reset() {
 
         var deleted = await pool.query('delete from reg_numbers');
@@ -59,7 +77,9 @@ module.exports = function regNumbers(pool) {
         getRegNumber,
         filterRegNumbers,
         reset,
-        getRegistration
+        getRegistration,
+        duplicateReg
+        
     }
 
 }   

@@ -20,19 +20,45 @@ describe('The registration numbers web app', function () {
     it('should be able to insert a registation number in the db', async function () {
 
         let plates = registration(pool);
-
-
-
         await plates.regNumbersAdded('CJ 123-321')
-
-
-
         assert.deepEqual([
             {
                 registration: 'CJ 123-321'
             }
         ]
             , await plates.getRegistration());
+
+
+    });
+
+    it('should add multiple registration numbers in the db', async function () {
+        let plates = registration(pool);
+
+
+        await plates.regNumbersAdded('CJ 123-321'),
+            await plates.regNumbersAdded('CY 123-321'),
+            await plates.regNumbersAdded('CJ 987654'),
+            await plates.regNumbersAdded('CA 345678'),
+            await plates.regNumbersAdded('CJ 129860'),
+            assert.deepEqual([
+                {
+                    registration: 'CJ 123-321'
+                } ,
+             {
+                    registration: "CY 123-321"
+                } ,
+                  {
+                    registration: "CJ 987654"
+                } ,
+                  {
+                    registration: "CA 345678"
+                } ,
+                  {
+                    registration: "CJ 129860"
+                }
+
+            ]
+                , await plates.getRegistration());
 
 
     });
@@ -111,22 +137,23 @@ describe('The registration numbers web app', function () {
 
         await plates.regNumbersAdded('CA 123-321'),
             await plates.regNumbersAdded('CY 123-321'),
-            await plates.regNumbersAdded('CJ 123-321'),
             await plates.regNumbersAdded('CJ 9876548'),
             await plates.regNumbersAdded('CA 3456780'),
             await plates.regNumbersAdded('CJ 1298606'),
+            await plates.regNumbersAdded('CY 123-000')
 
 
 
-
-            assert.deepEqual([{
-                registration: 'CY 123-321'
-            }
-            ]
-                , await plates.filterRegNumbers('CY'))
+        assert.deepEqual([{
+            registration: 'CY 123-321'
+        },
+        {
+            registration: 'CY 123-000'
+        }
+        ]
+            , await plates.filterRegNumbers('CY'))
     });
 
-    
 
     after(function () {
         pool.end();

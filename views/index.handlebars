@@ -2,19 +2,20 @@
     <div>
         <h1>Registration numbers</h1>
 
-        {{#if messages}}
-        <div class="messages">
-            <h6>{{messages.error}}</h6>
-            {{/if}}
-        </div>
-        {{#if confirm}}
-        <div class="confirm">
-            <h6>{{confirm.success}}</h6>
-        </div>
-        {{/if}}
+        <p class="">
+            Cape Town (CA) || Paarl (CJ) || Bellville (CY)
+            <br>
+            <br>
+
+            CA 1234 || CJ 123-456 || CY 123 234
+        </p>
+
+        <h6 class="messages">{{messages.error}}</h6>
+        <h6 class="confirm">{{messages.success}}</h6>
+
 
         <div>
-            <form action="/" method="POST">
+            <form action="/reg_numbers" method="POST">
                 <input type="text" name="reg" class="" placeholder="enter a registration number">
                 <button class="button-primary" type="submit">Add reg number</button>
                 <br>
@@ -27,7 +28,7 @@
                 </form>
             </div>
 
-            <form action="/reg_numbers" method="POST">
+            <form action="/reg_numbers" method="GET">
 
                 <div class="radio">
 
@@ -62,3 +63,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    setTimeout(function () {
+        document.querySelector(".messages").innerHTML = "";
+        document.querySelector(".confirm").innerHTML = ""
+    }, 2000);
+</script>
